@@ -1,0 +1,577 @@
+{
+  "paragraphs": [
+    {
+      "text": "%pyspark\n\n##Libs\nfrom pyspark.sql import SQLContext, Row\nfrom pyspark.sql.types import *\nimport os.path\n\nsqlContext \u003d HiveContext(sc)\nsqlContext.setConf(\"spark.sql.parquet.binaryAsString\", \"true\")\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.362",
+      "config": {
+        "colWidth": 12.0,
+        "results": [],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676362_-1531775540",
+      "id": "20170126-094708_33151243",
+      "dateCreated": "2019-05-26 19:07:56.362",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nl \u003d [(\u0027a\u0027, \u0027b\u0027), (\u0027a\u0027, \u0027c\u0027), (\u0027a\u0027, \u0027d\u0027), (\u0027b\u0027, \u0027c\u0027), (\u0027b\u0027, \u0027d\u0027)]\nrdd \u003d sc.parallelize(l)\ndf \u003d sqlContext.createDataFrame(rdd, [\u0027no1\u0027, \u0027no2\u0027])\ndf.show()\n\ndf1 \u003d df\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.364",
+      "config": {
+        "colWidth": 12.0,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+---+\n|no1|no2|\n+---+---+\n|  a|  b|\n|  a|  c|\n|  a|  d|\n|  b|  c|\n|  b|  d|\n+---+---+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676363_-754755108",
+      "id": "20170126-094956_948640159",
+      "dateCreated": "2019-05-26 19:07:56.364",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\nfrom pyspark.sql import functions as F\nfrom pyspark.sql.types import StringType\n\njoin_strings \u003d F.udf(lambda x: \";\".join(x), StringType())\n\nno1_to_no2s \u003d df1.groupBy(\"no1\").agg(F.collect_list(\"no2\").alias(\"no2s\"))\nno1_to_no2s.show()",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.364",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+---------+\n|no1|     no2s|\n+---+---------+\n|  a|[d, c, b]|\n|  b|   [d, c]|\n+---+---------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676364_-1945617756",
+      "id": "20170126-095039_1226711300",
+      "dateCreated": "2019-05-26 19:07:56.364",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nsc.version",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.365",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "u\u00271.6.1\u0027\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676365_41081875",
+      "id": "20170126-095232_751895211",
+      "dateCreated": "2019-05-26 19:07:56.365",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\nno1_to_no2s \u003d df1.groupBy(\"no1\").agg(F.collect_list(\"no2\").alias(\"no2s\"))\nno2_to_no1s \u003d df1.groupBy(\"no2\").agg(F.collect_list(\"no1\").alias(\"no1s\"))\n\nno1_to_no2s.show()",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.365",
+      "config": {
+        "colWidth": 12.0,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+---------+\n|no1|     no2s|\n+---+---------+\n|  a|[d, c, b]|\n|  b|   [d, c]|\n+---+---------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676365_1927725468",
+      "id": "20170126-100802_902792749",
+      "dateCreated": "2019-05-26 19:07:56.365",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nno2_to_no1s.show()",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.365",
+      "config": {
+        "colWidth": 12.0,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+------+\n|no2|  no1s|\n+---+------+\n|  b|   [a]|\n|  c|[b, a]|\n|  d|[b, a]|\n+---+------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676365_229242082",
+      "id": "20170126-104646_1508970516",
+      "dateCreated": "2019-05-26 19:07:56.365",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\na \u003d no1_to_no2s.withColumn(\u0027test\u0027, join_strings(no1_to_no2s.no2s))\na.show()",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.366",
+      "config": {
+        "colWidth": 12.0,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+---------+-----+\n|no1|     no2s| test|\n+---+---------+-----+\n|  a|[d, c, b]|d;c;b|\n|  b|   [c, d]|  c;d|\n+---+---------+-----+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676366_-2002879168",
+      "id": "20170126-104737_572731527",
+      "dateCreated": "2019-05-26 19:07:56.366",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nno1_to_no2s \u003d df1.groupBy(\"no1\").agg(F.collect_list(\"no2\").alias(\"no2s_list\")).withColumn(\u0027no2s\u0027, join_strings(F.col(\u0027no2s_list\u0027))).drop(\u0027no2s_list\u0027)\nno1_to_no2s.show()",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.367",
+      "config": {
+        "colWidth": 12.0,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+-----+\n|no1| no2s|\n+---+-----+\n|  a|c;d;b|\n|  b|  c;d|\n+---+-----+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676366_1762149001",
+      "id": "20170126-105646_2102368632",
+      "dateCreated": "2019-05-26 19:07:56.367",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nno1_to_no2s \u003d df1.groupBy(\"no1\").agg(F.collect_list(\"no2\").alias(\"no2s_list\")).withColumn(\u0027no2s\u0027, join_strings(F.col(\u0027no2s_list\u0027))).drop(\u0027no2s_list\u0027)\nno2_to_no1s \u003d df1.groupBy(\"no2\").agg(F.collect_list(\"no1\").alias(\"no1s_list\")).withColumn(\u0027no1s\u0027, join_strings(F.col(\u0027no1s_list\u0027))).drop(\u0027no1s_list\u0027)\n\nv2neigh \u003d no1_to_no2s.unionAll(no2_to_no1s).groupBy(\u0027no1\u0027).agg(F.collect_list(\"no2s\").alias(\"neighbors_list\")).withColumnRenamed(\u0027no1\u0027, \u0027vertex\u0027).withColumn(\u0027neighbors\u0027, join_strings(F.col(\u0027neighbors_list\u0027))).drop(\u0027neighbors_list\u0027)\n\nv2neigh.show()\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.367",
+      "config": {
+        "colWidth": 12.0,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+---------+\n|vertex|neighbors|\n+------+---------+\n|     a|    c;d;b|\n|     b|    c;d;a|\n|     c|      a;b|\n|     d|      a;b|\n+------+---------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676367_-1704749979",
+      "id": "20170126-105901_1881091476",
+      "dateCreated": "2019-05-26 19:07:56.367",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\na2b_no1neighs \u003d df1.join(v2neigh, df1.no1 \u003d\u003d v2neigh.vertex, \u0027inner\u0027).select(\u0027no1\u0027, \u0027no2\u0027, \u0027neighbors\u0027).withColumnRenamed(\u0027neighbors\u0027, \u0027no1_neighs\u0027)\n\n#add neighbors for no2 to pair table\na2b_neighs \u003d a2b_no1neighs.join(v2neigh, a2b_no1neighs.no2 \u003d\u003d v2neigh.vertex, \u0027inner\u0027).select(\u0027no1\u0027, \u0027no2\u0027, \u0027no1_neighs\u0027, \u0027neighbors\u0027).withColumnRenamed(\u0027neighbors\u0027, \u0027no2_neighs\u0027)\na2b_neighs.show()\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.368",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+---+----------+----------+\n|no1|no2|no1_neighs|no2_neighs|\n+---+---+----------+----------+\n|  a|  b|     b;c;d|     c;d;a|\n|  b|  c|     c;d;a|       a;b|\n|  a|  c|     b;c;d|       a;b|\n|  b|  d|     c;d;a|       b;a|\n|  a|  d|     b;c;d|       b;a|\n+---+---+----------+----------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676368_-1317886341",
+      "id": "20170126-110557_816809523",
+      "dateCreated": "2019-05-26 19:07:56.368",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\ndef getSharedElements(row):\n    shared_els \u003d set(row.no1_neighs.split(\u0027;\u0027)) \u0026 set(row.no2_neighs.split(\u0027;\u0027))\n    \n    return [row.no1, row.no2, shared_els]\n\ntmp \u003d a2b_neighs.rdd.map(getSharedElements).toDF([\u0027no1\u0027, \u0027no2\u0027, \u0027shared_neighs\u0027]).withColumn(\u0027n_shared_neighs\u0027, F.length(F.col(\u0027shared_neighs\u0027)))\ntmp.show()\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.368",
+      "config": {
+        "colWidth": 12.0,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Traceback (most recent call last):\n  File \"/tmp/zeppelin_pyspark-3274099506742348834.py\", line 267, in \u003cmodule\u003e\n    raise Exception(traceback.format_exc())\nException: Traceback (most recent call last):\n  File \"/tmp/zeppelin_pyspark-3274099506742348834.py\", line 260, in \u003cmodule\u003e\n    exec(code)\n  File \"\u003cstdin\u003e\", line 4, in \u003cmodule\u003e\n  File \"/home/wja041/prg/spark-1.6.1-bin-hadoop2.6/python/pyspark/sql/context.py\", line 64, in toDF\n    return sqlContext.createDataFrame(self, schema, sampleRatio)\n  File \"/home/wja041/prg/spark-1.6.1-bin-hadoop2.6/python/pyspark/sql/context.py\", line 423, in createDataFrame\n    rdd, schema \u003d self._createFromRDD(data, schema, samplingRatio)\n  File \"/home/wja041/prg/spark-1.6.1-bin-hadoop2.6/python/pyspark/sql/context.py\", line 310, in _createFromRDD\n    struct \u003d self._inferSchema(rdd, samplingRatio)\n  File \"/home/wja041/prg/spark-1.6.1-bin-hadoop2.6/python/pyspark/sql/context.py\", line 263, in _inferSchema\n    schema \u003d _infer_schema(first)\n  File \"/home/wja041/prg/spark-1.6.1-bin-hadoop2.6/python/pyspark/sql/types.py\", line 833, in _infer_schema\n    fields \u003d [StructField(k, _infer_type(v), True) for k, v in items]\n  File \"/home/wja041/prg/spark-1.6.1-bin-hadoop2.6/python/pyspark/sql/types.py\", line 810, in _infer_type\n    raise TypeError(\"not supported type: %s\" % type(obj))\nTypeError: not supported type: \u003ctype \u0027set\u0027\u003e\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676368_-519939760",
+      "id": "20170126-120134_1845801097",
+      "dateCreated": "2019-05-26 19:07:56.368",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\ndef getNSharedElements(row):\n    n_shared_els \u003d len(set(row.no1_neighs.split(\u0027;\u0027)) \u0026 set(row.no2_neighs.split(\u0027;\u0027)))\n    \n    return [row.no1, row.no2, n_shared_els]\ntmp \u003d a2b_neighs.rdd.map(getNSharedElements).toDF([\u0027no1\u0027, \u0027no2\u0027, \u0027n_shared_neighs\u0027])\ntmp.show()\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.369",
+      "config": {
+        "colWidth": 12.0,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {},
+              "map": {
+                "baseMapType": "Streets",
+                "isOnline": true,
+                "pinCols": []
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+---+---------------+\n|no1|no2|n_shared_neighs|\n+---+---+---------------+\n|  a|  b|              2|\n|  a|  c|              1|\n|  b|  c|              1|\n|  a|  d|              1|\n|  b|  d|              1|\n+---+---+---------------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676369_-1354171758",
+      "id": "20170126-121348_568365677",
+      "dateCreated": "2019-05-26 19:07:56.369",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "2019-05-26 19:07:56.369",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1558897676369_-392806484",
+      "id": "20170126-121632_1699906070",
+      "dateCreated": "2019-05-26 19:07:56.369",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "exploration/udfcollectllist",
+  "id": "2ECUAY8CF",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
